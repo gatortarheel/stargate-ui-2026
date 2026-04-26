@@ -45,6 +45,8 @@ export class StargateService {
   }
 
   getAstronautDuties(name: string): Observable<AstronautDutiesResponse> {
-    return this.http.get<AstronautDutiesResponse>(`${this.apiUrl}/AstronautDuty/${name}`);
-  }
+    return this.http.get<AstronautDutiesResponse>(
+        `${environment.apiUrl}/AstronautDuty/${encodeURIComponent(name)}`
+    );
+}
 }
