@@ -1,1 +1,100 @@
 <p>home works!</p>
+<div class="acts-container">
+  <header class="acts-header">
+    <div class="header-content">
+      <h1>🚀 ACTS</h1>
+      <p class="subtitle">Astronaut Career Tracking System</p>
+    </div>
+    <button class="logout-btn" (click)="logout()">Sign Out</button>
+  </header>
+
+  <main class="acts-main">
+    <section class="people-panel">
+      <div class="panel-header">
+        <h2>Personnel</h2>
+        @if (loading()) {
+          <span class="loading-indicator">Loading...</span>
+        }
+      </div>
+
+      @if (people().length === 0 && !loading()) {
+        <div class="empty-state">No personnel found.</div>
+      }
+
+      <ul class="people-list">
+        @for (person of people(); track person.personId) {
+          <li
+            class="person-item"
+            [class.selected]="selectedPerson()?.personId === person.personId"
+            [class.retired]="isRetired(person)"
+            (click)="selectPerson(person)">
+            <div class="person-name">{{ person.name }}</div>
+            <div class="person-rank">{{ person.currentRank || 'Civilian' }}</div>
+            @if (isRetired(person)) {
+              <span class="retired-badge">Retired</span>
+            }
+          </li>
+        }
+      </ul>
+    </section>
+
+    <section class="detail-panel">
+      @if (!selectedPerson()) {
+        <div class="empty-state centered">
+          <p>👈 Select a person to view their astronaut career</p>
+        </div>
+      }
+
+      @if (selectedPerson()) {
+        <div class="person-detail">
+          <div class="detail-header">
+            <h2>{{ selectedPerson()!.name }}</h2>
+            <div class="detail-meta">
+              <span class="badge rank">{{ selectedPerson()!.currentRank || 'No Rank' }}</span>
+              <span class="badge title">{{ selectedPerson()!.currentDutyTitle || 'No Assignment' }}</span>
+            </div>
+          </div>
+
+          @if (selectedPerson()!.careerStartDate) {
+            <div class="career-dates">
+              <span>Career Start: {{ selectedPerson()!.careerStartDate | date:'mediumDate' }}</span>
+              @if (selectedPerson()!.careerEndDate) {
+                <span>Career End: {{ selectedPerson()!.careerEndDate | date:'mediumDate' }}</span>
+              }
+            </div>
+          }
+
+          <h3>Duty History</h3>
+
+          @if (loadingDuties()) {
+            <div class="loading-duties">
+              <div class="spinner"></div>
+              <span>Loading duty history...</span>
+            </div>
+          }
+
+          @if (!loadingDuties() && duties().length === 0) {
+            <div class="empty-state">No duty assignments found.</div>
+          }
+
+          <div class="timeline">
+            @for (duty of duties(); track duty.id) {
+              <div class="timeline-item" [class.current]="!duty.dutyEndDate">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                  <div class="duty-title">{{ duty.dutyTitle }}</div>
+                  <div class="duty-rank">{{ duty.rank }}</div>
+                  <div class="duty-dates">
+                    {{ duty.dutyStartDate | date:'mediumDate' }}
+                    —
+                    {{ duty.dutyEndDate ? (duty.dutyEndDate | date:'mediumDate') : 'Present' }}
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </section>
+  </main>
+</div>
