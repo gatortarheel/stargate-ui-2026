@@ -1,0 +1,29 @@
+<div class="health-container">
+  <header class="health-header">
+    <div class="header-content">
+      <h1>ACTS</h1>
+      <p class="subtitle">Astronaut Career Tracking System v.0.1</p>
+    </div>
+    <a routerLink="/auth/login" class="nav-link">Sign In</a>
+  </header>
+
+  <main class="health-main">
+    <h2>API Health</h2>
+
+    <div class="status-card" [class.healthy]="status() === 'healthy'" [class.unhealthy]="status() === 'unhealthy'" [class.checking]="status() === 'checking'">
+      <div class="status-dot"></div>
+      <div class="status-info">
+        <span class="status-label">
+          @if (status() === 'checking') { Checking… }
+          @if (status() === 'healthy') { Healthy }
+          @if (status() === 'unhealthy') { Unhealthy }
+        </span>
+        <span class="status-instance">{{ apiLabel }} — {{ apiUrl }}</span>
+      </div>
+    </div>
+
+    <button class="refresh-btn" (click)="check()" [disabled]="status() === 'checking'">
+      Refresh
+    </button>
+  </main>
+</div>

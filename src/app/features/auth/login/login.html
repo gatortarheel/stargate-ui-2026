@@ -2,6 +2,15 @@
   <div class="login-card">
     <h1 class="login-title">Sign In</h1>
 
+    <div class="api-status" [class.healthy]="apiStatus() === 'healthy'" [class.unhealthy]="apiStatus() === 'unhealthy'" [class.checking]="apiStatus() === 'checking'">
+      <div class="status-dot"></div>
+      <span>
+        @if (apiStatus() === 'checking') { {{ apiLabel }} API: Checking… }
+        @if (apiStatus() === 'healthy') { {{ apiLabel }} API: Healthy }
+        @if (apiStatus() === 'unhealthy') { {{ apiLabel }} API: Unavailable }
+      </span>
+    </div>
+
     <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
 
       <div class="field">

@@ -1,10 +1,13 @@
 <div class="acts-container">
   <header class="acts-header">
     <div class="header-content">
-      <h1>🚀 ACTS</h1>
-      <p class="subtitle">Astronaut Career Tracking System</p>
+      <h1>ACTS</h1>
+      <p class="subtitle">Astronaut Career Tracking System v.0.1</p>
     </div>
-    <button class="logout-btn" (click)="logout()">Sign Out</button>
+    <div class="header-actions">
+      <a routerLink="/health" class="health-link">API Status</a>
+      <button class="logout-btn" (click)="logout()">Sign Out</button>
+    </div>
   </header>
 
   <main class="acts-main">

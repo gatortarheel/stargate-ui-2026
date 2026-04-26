@@ -34,6 +34,7 @@ export interface PeopleResponse {
   message: string;
 }
 
+
 @Injectable({ providedIn: 'root' })
 export class StargateService {
   private apiUrl = environment.apiUrl;
@@ -48,5 +49,9 @@ export class StargateService {
     return this.http.get<AstronautDutiesResponse>(
         `${environment.apiUrl}/AstronautDuty/${encodeURIComponent(name)}`
     );
-}
+  }
+
+  getHealth(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/health`, { responseType: 'text' });
+  }
 }
