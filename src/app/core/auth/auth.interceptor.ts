@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Auth } from './auth';
 
 @Injectable()
@@ -16,6 +16,13 @@ export class AuthInterceptor implements HttpInterceptor {
     const cloned = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` }
     });
-    return next.handle(cloned);
+    return next.handle(cloned).pipe(
+      catchError(err => {
+        if (err.status === 401) {
+          this.auth.logout('/auth/login?expired=true');
+        }
+        return throwError(() => err);
+      })
+    );
   }
 }

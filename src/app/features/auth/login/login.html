@@ -43,6 +43,10 @@
         }
       </div>
 
+      @if (sessionExpired()) {
+        <div class="warning-banner">Your session has expired. Please sign in again.</div>
+      }
+
       @if (errorMessage()) {
         <div class="error-banner">{{ errorMessage() }}</div>
       }

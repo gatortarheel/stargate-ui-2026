@@ -22,8 +22,8 @@ export class Auth {
     return this.accessToken();
   }
 
-  async login(payload: LoginRequest): Promise<void> {
-    const resp = await firstValueFrom(
+  async login(payload: LoginRequest, returnUrl = '/'): Promise<void> {
+    await firstValueFrom(
       this.http.post<LoginResponse>(`${environment.apiUrl}/api/auth/login`, payload).pipe(
         tap(r => {
           this.accessToken.set(r.accessToken);
@@ -31,7 +31,7 @@ export class Auth {
         })
       )
     );
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl(returnUrl);
   }
 
   logout(redirect = '/auth/login'): void {
